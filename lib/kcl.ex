@@ -8,6 +8,8 @@ defmodule Kcl do
 
   - `crypto_box_curve25519xsalsa20poly1305`
   - `crypto_box_curve25519xsalsa20poly1305_open`
+  - `crypto_secretbox_curve25519xsalsa20poly1305`
+  - `crypto_secretbox_curve25519xsalsa20poly1305_open`
 
   At this time, no support is provided for multiple packets/streaming
   or nonce-agreement.
@@ -83,7 +85,7 @@ defmodule Kcl do
   def unbox(packet,shared_secret,nonce)
   def unbox(<<mac::binary-size(16),c::binary>>,key,n) do
       <<pnonce::binary-size(32), m::binary>> =  Salsa20.crypt(thirtytwo_zeroes<>c,second_level_key(key,n),binary_part(n,16,8))
-      case c |> Poly1305.hmac(pnonce) |> Poly1305.compare(mac) do
+      case c |> Poly1305.hmac(pnonce) |> Poly1305.same_hmac?(mac) do
           true ->  m
           _    ->  :error
       end
