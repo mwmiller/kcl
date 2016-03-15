@@ -30,6 +30,18 @@ defmodule Kcl do
   defp thirtytwo_zeroes, do: sixteen_zeroes<>sixteen_zeroes
 
   @doc """
+  generate a private/public key pair
+  """
+  @spec generate_key_pair() :: {key, key} | :error
+  def generate_key_pair, do: Curve25519.generate_key_pair
+
+  @doc """
+  derive a public key from a private key
+  """
+  @spec derive_public_key(key) :: key | :error
+  def derive_public_key(private_key), do: Curve25519.derive_public_key(private_key)
+
+  @doc """
   pre-compute a shared key
 
   Mainly useful in a situation where many messages will be exchanged.
