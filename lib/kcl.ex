@@ -54,39 +54,32 @@ defmodule Kcl do
   @doc """
   box up an authenticated packet
 
-  `box/3` uses the result of `shared_secret`
-  `box/4` will recompute this key from the parties' secret and public keys.
   """
-  @spec box(binary, key, key, nonce) :: binary
+  @spec box(binary, key, key, nonce) :: {binary, Kcl.State.t}
   def box(msg,our_private,their_public,nonce) do
-      shared_secret = shared_secret(our_private, their_public)
-      box(msg,shared_secret,nonce)
+      box(msg,Kcl.State.init(our_private) |> Kcl.State.new_peer(their_public),nonce)
   end
-  @spec box(binary,key,nonce) :: binary
-  def box(msg,shared_secret,nonce) do
-      <<pnonce::binary-size(32), c::binary>> =  Salsa20.crypt(thirtytwo_zeroes<>msg,second_level_key(shared_secret,nonce),binary_part(nonce,16,8))
-      Poly1305.hmac(c,pnonce)<>c
+  @spec box(binary,Kcl.State.t,nonce) :: {binary, Kcl.State.t}
+  def box(msg,state,nonce) when is_map(state) do
+      <<pnonce::binary-size(32), c::binary>> = Salsa20.crypt(thirtytwo_zeroes<>msg,second_level_key(state.shared_secret,nonce),binary_part(nonce,16,8))
+      {Poly1305.hmac(c,pnonce)<>c, struct(state, [previous_nonce: nonce])}
   end
 
   @doc """
   unbox an authenticated packet
 
   Returns `:error` when the packet contents cannot be authenticated, otherwise
-  the decrypted payload.
-
-  `unbox/3` uses the pre-computed keys from `shared_secret`
-  `unbox/4` recomputes the shared key from the parties' secret and public keys
+  the decrypted payload and updated state.
   """
-  @spec unbox(binary, key, key, nonce) :: binary | :error
+  @spec unbox(binary, key, key, nonce) :: {binary, Kcl.State.t} | :error
   def unbox(packet,our_private,their_public,nonce) do
-      shared_secret = shared_secret(our_private,their_public)
-      unbox(packet,shared_secret,nonce)
+      unbox(packet,Kcl.State.init(our_private) |> Kcl.State.new_peer(their_public),nonce)
   end
-  def unbox(packet,shared_secret,nonce)
-  def unbox(<<mac::binary-size(16),c::binary>>,key,n) do
-      <<pnonce::binary-size(32), m::binary>> =  Salsa20.crypt(thirtytwo_zeroes<>c,second_level_key(key,n),binary_part(n,16,8))
-      case c |> Poly1305.hmac(pnonce) |> Poly1305.same_hmac?(mac) do
-          true ->  m
+  def unbox(packet,state,nonce)
+  def unbox(<<mac::binary-size(16),c::binary>>,state,n) do
+      <<pnonce::binary-size(32), m::binary>> = Salsa20.crypt(thirtytwo_zeroes<>c,second_level_key(state.shared_secret,n),binary_part(n,16,8))
+      case (c |> Poly1305.hmac(pnonce) |> Poly1305.same_hmac?(mac)) and n > state.previous_nonce do
+          true ->  {m, struct(state, [previous_nonce: n])}
           _    ->  :error
       end
   end

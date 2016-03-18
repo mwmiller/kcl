@@ -13,16 +13,26 @@ defmodule KclTest do
     refute Kcl.derive_public_key(apk) == ask, "Does not reproduce a secret key from a public one"
   end
 
-  test "box/unbox with public/private pairs" do
-    assert Kcl.box(m,ask,bpk,n)   == c, "Box up a packet with Alice's secret and Bob's public"
-    assert Kcl.unbox(c,bsk,apk,n) == m, "Unbox the same packet with Bob's secret and Alice's public"
-  end
-
-  test "using shared_secrets" do
+  test "shared secrets" do
     assert Kcl.shared_secret(ask,bpk) == sec, "Alice produces the expected secret"
     assert Kcl.shared_secret(bsk,apk) == sec, "Bob produces the same secret"
-    assert Kcl.box(m,sec,n)           == c,   "Box up a packet with the shared secret"
-    assert Kcl.unbox(c,sec,n)         == m,   "Unbox it on the other end with the same secret"
+  end
+
+  test "box/unbox with public/private pairs" do
+    {boxed, _} = Kcl.box(m,ask,bpk,n)
+    assert boxed == c, "Box up a packet with Alice's secret and Bob's public"
+    {unboxed, _}  =  Kcl.unbox(c,bsk,apk,n)
+    assert unboxed == m, "Unbox the same packet with Bob's secret and Alice's public"
+  end
+
+  test "box/unbox with state" do
+     a_state = Kcl.State.init(ask) |> Kcl.State.new_peer(bpk)
+     b_state = Kcl.State.init(bsk) |> Kcl.State.new_peer(apk)
+
+    {boxed, _} = Kcl.box(m,a_state,n)
+    assert boxed == c, "Box up a packet with Alice's state"
+    {unboxed, _}  =  Kcl.unbox(c,b_state,n)
+    assert unboxed == m, "Unbox the same packet with Bob's state"
   end
 
 end
