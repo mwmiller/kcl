@@ -55,12 +55,10 @@ defmodule Kcl do
   box up an authenticated packet
 
   """
-  @spec box(binary, key, key, nonce) :: {binary, Kcl.State.t}
-  def box(msg,our_private,their_public,nonce) do
-      box(msg,Kcl.State.init(our_private) |> Kcl.State.new_peer(their_public),nonce)
-  end
-  @spec box(binary,Kcl.State.t,nonce) :: {binary, Kcl.State.t}
-  def box(msg,state,nonce) when is_map(state) do
+  @spec box(binary, nonce, key, key) :: {binary, Kcl.State.t}
+  def box(msg,nonce,our_private,their_public), do: box(msg,nonce,Kcl.State.init(our_private) |> Kcl.State.new_peer(their_public))
+  @spec box(binary,nonce,Kcl.State.t) :: {binary, Kcl.State.t}
+  def box(msg,nonce,state) when is_map(state) do
       <<pnonce::binary-size(32), c::binary>> = Salsa20.crypt(thirtytwo_zeroes<>msg,second_level_key(state.shared_secret,nonce),binary_part(nonce,16,8))
       {Poly1305.hmac(c,pnonce)<>c, struct(state, [previous_nonce: nonce])}
   end
@@ -71,12 +69,10 @@ defmodule Kcl do
   Returns `:error` when the packet contents cannot be authenticated, otherwise
   the decrypted payload and updated state.
   """
-  @spec unbox(binary, key, key, nonce) :: {binary, Kcl.State.t} | :error
-  def unbox(packet,our_private,their_public,nonce) do
-      unbox(packet,Kcl.State.init(our_private) |> Kcl.State.new_peer(their_public),nonce)
-  end
-  def unbox(packet,state,nonce)
-  def unbox(<<mac::binary-size(16),c::binary>>,state,n) do
+  @spec unbox(binary, nonce, key, key) :: {binary, Kcl.State.t} | :error
+  def unbox(packet,nonce,our_private,their_public), do: unbox(packet,nonce,Kcl.State.init(our_private) |> Kcl.State.new_peer(their_public))
+  def unbox(packet,nonce,state)
+  def unbox(<<mac::binary-size(16),c::binary>>,n,state) do
       <<pnonce::binary-size(32), m::binary>> = Salsa20.crypt(thirtytwo_zeroes<>c,second_level_key(state.shared_secret,n),binary_part(n,16,8))
       case (c |> Poly1305.hmac(pnonce) |> Poly1305.same_hmac?(mac)) and n > state.previous_nonce do
           true ->  {m, struct(state, [previous_nonce: n])}

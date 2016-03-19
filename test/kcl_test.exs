@@ -19,9 +19,9 @@ defmodule KclTest do
   end
 
   test "box/unbox with public/private pairs" do
-    {boxed, _} = Kcl.box(m,ask,bpk,n)
+    {boxed, _} = Kcl.box(m,n,ask,bpk)
     assert boxed == c, "Box up a packet with Alice's secret and Bob's public"
-    {unboxed, _}  =  Kcl.unbox(c,bsk,apk,n)
+    {unboxed, _}  =  Kcl.unbox(c,n,bsk,apk)
     assert unboxed == m, "Unbox the same packet with Bob's secret and Alice's public"
   end
 
@@ -29,9 +29,9 @@ defmodule KclTest do
      a_state = Kcl.State.init(ask) |> Kcl.State.new_peer(bpk)
      b_state = Kcl.State.init(bsk) |> Kcl.State.new_peer(apk)
 
-    {boxed, _} = Kcl.box(m,a_state,n)
+    {boxed, _} = Kcl.box(m,n,a_state)
     assert boxed == c, "Box up a packet with Alice's state"
-    {unboxed, _}  =  Kcl.unbox(c,b_state,n)
+    {unboxed, _}  =  Kcl.unbox(c,n,b_state)
     assert unboxed == m, "Unbox the same packet with Bob's state"
   end
 
