@@ -25,9 +25,9 @@ defmodule KclTest do
     assert unboxed == m, "Unbox the same packet with Bob's secret and Alice's public"
   end
 
-  test "box/unbox with state" do
-     a_state = Kcl.State.init(ask) |> Kcl.State.new_peer(bpk)
-     b_state = Kcl.State.init(bsk) |> Kcl.State.new_peer(apk)
+  test "box/unbox with connection state" do
+     a_state = Kcl.new_connection_state(ask, apk, bpk)
+     b_state = Kcl.new_connection_state(bsk, apk)
 
     {boxed, _} = Kcl.box(m,n,a_state)
     assert boxed == c, "Box up a packet with Alice's state"

@@ -80,4 +80,14 @@ defmodule Kcl do
       end
   end
 
+  @doc """
+  create an inital state for a peer connection
+
+  A convenience wrapper around `Kcl.State.init` and `Kcl.State.new_peer`
+  """
+  @spec new_connection_state(key, key | nil, key) :: Kcl.State.t
+  def new_connection_state(our_private, our_public \\ nil, their_public) do
+    Kcl.State.init(our_private, our_public) |> Kcl.State.new_peer(their_public)
+  end
+
 end
