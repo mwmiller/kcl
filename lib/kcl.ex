@@ -3,16 +3,12 @@ defmodule Kcl do
   @moduledoc """
   A poor NaCl crypto suite substitute
 
-  The functions exposed here are the equivalent of (and
-  interoperable with):
+  The `box` and `unbox` functions exposed here are the equivalent
+  of NaCl's:
 
   - `crypto_box_curve25519xsalsa20poly1305`
   - `crypto_box_curve25519xsalsa20poly1305_open`
-  - `crypto_secretbox_curve25519xsalsa20poly1305`
-  - `crypto_secretbox_curve25519xsalsa20poly1305_open`
 
-  At this time, no support is provided for multiple packets/streaming
-  or nonce-agreement.
   """
 
   @typedoc """
@@ -47,7 +43,6 @@ defmodule Kcl do
   pre-compute a shared key
 
   Mainly useful in a situation where many messages will be exchanged.
-  This module does not yet do a lot of support in that area.
   """
   def shared_secret(our_private, their_public), do: Curve25519.derive_shared_secret(our_private,their_public) |> first_level_key
 

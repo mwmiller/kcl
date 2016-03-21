@@ -3,7 +3,7 @@ defmodule Kcl.Mixfile do
 
   def project do
     [app: :kcl,
-     version: "0.4.0",
+     version: "0.4.1",
      elixir: "~> 1.2",
      name: "KCl",
      source_url: "https://github.com/mwmiller/kcl",
