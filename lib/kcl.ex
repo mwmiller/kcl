@@ -21,8 +21,11 @@ defmodule Kcl do
   """
   @type key :: <<_ :: 32 * 8>>
 
-  defp first_level_key(k), do: Salsa20.hash(k, sixteen_zeroes)
+  defp first_level_key(k), do: k |> pad(16) |> Salsa20.hash(sixteen_zeroes)
   defp second_level_key(k,n) when byte_size(n) == 24, do: k |> Salsa20.hash(binary_part(n,0,16))
+
+  defp pad(s, n) when byte_size(s) >= n, do: s
+  defp pad(s, n) when byte_size(s) <  n, do: pad(<<0>><>s, n)
 
   defp sixteen_zeroes,   do: <<0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0>>
   defp thirtytwo_zeroes, do: sixteen_zeroes<>sixteen_zeroes
