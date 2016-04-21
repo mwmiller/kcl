@@ -1,14 +1,13 @@
 defmodule Kcl do
 
   @moduledoc """
-  A poor NaCl crypto suite substitute
+  pure Elixir NaCL crypto suite substitute
 
   The `box` and `unbox` functions exposed here are the equivalent
   of NaCl's:
 
   - `crypto_box_curve25519xsalsa20poly1305`
   - `crypto_box_curve25519xsalsa20poly1305_open`
-
   """
 
   @typedoc """
@@ -21,6 +20,16 @@ defmodule Kcl do
   """
   @type key :: <<_ :: 32 * 8>>
 
+  @typedoc """
+  computed signature
+  """
+  @type signature :: <<_:: 64 * 8>>
+
+  @typedoc """
+  key varieties
+  """
+  @type key_variety :: :sign | :encrypt
+
   defp first_level_key(k), do: k |> pad(16) |> Salsa20.hash(sixteen_zeroes)
   defp second_level_key(k,n) when byte_size(n) == 24, do: k |> Salsa20.hash(binary_part(n,0,16))
 
@@ -32,15 +41,20 @@ defmodule Kcl do
 
   @doc """
   generate a `{private, public}` key pair
+
   """
-  @spec generate_key_pair() :: {key, key} | :error
-  def generate_key_pair, do: Curve25519.generate_key_pair
+  @spec generate_key_pair(key_variety) :: {key, key} | :error
+  def generate_key_pair(variety \\ :encrypt)
+  def generate_key_pair(:encrypt), do: Curve25519.generate_key_pair
+  def generate_key_pair(:sign), do: Ed25519.generate_key_pair
 
   @doc """
   derive a public key from a private key
   """
-  @spec derive_public_key(key) :: key | :error
-  def derive_public_key(private_key), do: Curve25519.derive_public_key(private_key)
+  @spec derive_public_key(key, key_variety) :: key | :error
+  def derive_public_key(private_key, variety \\ :encrypt)
+  def derive_public_key(private_key, :encrypt), do: Curve25519.derive_public_key(private_key)
+  def derive_public_key(private_key, :sign), do: Ed25519.derive_public_key(private_key)
 
   @doc """
   pre-compute a shared key
@@ -104,5 +118,20 @@ defmodule Kcl do
   def new_connection_state(our_private, our_public \\ nil, their_public) do
     Kcl.State.init(our_private, our_public) |> Kcl.State.new_peer(their_public)
   end
+
+  @doc """
+  sign a message
+
+  If only the secret key is provided, the public key will be derived therefrom.
+  This can add significant overhead to the signing operation.
+  """
+  @spec sign(binary, key, key) :: signature
+  def sign(message, secret_key, public_key \\ nil), do: Ed25519.signature(message, secret_key, public_key)
+
+  @doc """
+  validate a message signature
+  """
+  @spec valid_signature?(signature, binary, key) :: boolean
+  def valid_signature?(signature, message, public_key), do: Ed25519.valid_signature?(signature, message, public_key)
 
 end

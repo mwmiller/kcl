@@ -4,8 +4,13 @@ defmodule KclTest do
   import PDFConstants
 
   test "key handling" do
-    {sk, pk}  = Kcl.generate_key_pair
-    assert Kcl.derive_public_key(sk) == pk, "Can reproduce a public key from a randomly generated secret key"
+    {esk, epk}  = Kcl.generate_key_pair
+    {ssk, spk} = Kcl.generate_key_pair(:sign)
+    assert Kcl.derive_public_key(esk, :encrypt) == epk, "Can reproduce a public encryption key from a randomly generated secret key"
+    assert Kcl.derive_public_key(ssk, :sign) == spk, "Can reproduce a public signing key from a randomly generated secret key"
+
+    refute Kcl.derive_public_key(esk, :sign)    == spk, "Public encryption key is not the public signing key"
+    refute Kcl.derive_public_key(ssk, :encrypt) == spk, "Public signing key is not the public encryption key"
 
     assert Kcl.derive_public_key(ask) == apk, "Can reproduce Alice's public key from her secret key"
     assert Kcl.derive_public_key(bsk) == bpk, "Can reproduce Bob's public key from his secret key"
@@ -33,6 +38,16 @@ defmodule KclTest do
     assert boxed == c, "Box up a packet with Alice's state"
     {unboxed, _}  =  Kcl.unbox(c,n,b_state)
     assert unboxed == m, "Unbox the same packet with Bob's state"
+  end
+
+  test "message signatures" do
+    {ssk, spk} = Kcl.generate_key_pair(:sign)
+    msg = :crypto.strong_rand_bytes(384)
+
+    sig = Kcl.sign(msg, ssk, spk)
+
+    assert byte_size(sig) == 64, "Generates a 64-byte signature"
+    assert Kcl.valid_signature?(sig, msg, spk), "The signature can be validated"
   end
 
 end
