@@ -1,7 +1,7 @@
 defmodule Kcl do
 
   @moduledoc """
-  pure Elixir NaCL crypto suite substitute
+  pure Elixir NaCl crypto suite substitute
 
   The `box` and `unbox` functions exposed here are the equivalent
   of NaCl's:

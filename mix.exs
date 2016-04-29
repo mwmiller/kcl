@@ -3,7 +3,7 @@ defmodule Kcl.Mixfile do
 
   def project do
     [app: :kcl,
-     version: "0.6.1",
+     version: "0.6.2",
      elixir: "~> 1.2",
      name: "KCl",
      source_url: "https://github.com/mwmiller/kcl",
@@ -26,13 +26,13 @@ defmodule Kcl.Mixfile do
       {:poly1305, "~> 0.4"},
       {:power_assert, "~> 0.0.8", only: :test},
       {:earmark, ">= 0.0.0", only: :dev},
-      {:ex_doc, "~> 0.11.4", only: :dev},
+      {:ex_doc, "~> 0.11", only: :dev},
     ]
   end
 
   defp description do
     """
-    KCl - a less savory pure Elixir NaCL crypto suite substitute
+    KCl - a less savory pure Elixir NaCl crypto suite substitute
     """
   end
 
