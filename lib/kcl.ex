@@ -13,17 +13,17 @@ defmodule Kcl do
   @typedoc """
   shared nonce
   """
-  @type nonce :: <<_ :: 24 * 8>>
+  @type nonce :: binary
 
   @typedoc """
   public or private key
   """
-  @type key :: <<_ :: 32 * 8>>
+  @type key :: binary
 
   @typedoc """
   computed signature
   """
-  @type signature :: <<_:: 64 * 8>>
+  @type signature :: binary
 
   @typedoc """
   key varieties

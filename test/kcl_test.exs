@@ -1,5 +1,5 @@
 defmodule KclTest do
-  use PowerAssert
+  use ExUnit.Case
   doctest Kcl
   import PDFConstants
 

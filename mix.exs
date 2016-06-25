@@ -3,8 +3,8 @@ defmodule Kcl.Mixfile do
 
   def project do
     [app: :kcl,
-     version: "0.6.2",
-     elixir: "~> 1.2",
+     version: "0.6.3",
+     elixir: "~> 1.3",
      name: "KCl",
      source_url: "https://github.com/mwmiller/kcl",
      build_embedded: Mix.env == :prod,
@@ -24,9 +24,8 @@ defmodule Kcl.Mixfile do
       {:curve25519, "~> 0.1"},
       {:salsa20, "~> 0.3"},
       {:poly1305, "~> 0.4"},
-      {:power_assert, "~> 0.0.8", only: :test},
       {:earmark, "~> 0.2", only: :dev},
-      {:ex_doc, "~> 0.11", only: :dev},
+      {:ex_doc, "~> 0.12", only: :dev},
     ]
   end
 

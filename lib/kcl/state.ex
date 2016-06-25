@@ -19,7 +19,10 @@ defmodule Kcl.State do
   """
   @spec init(Kcl.key, Kcl.key | nil ) :: Kcl.State.t
   def init(our_private, our_public \\ nil) do
-    if our_public == nil, do: our_public = Kcl.derive_public_key(our_private)
+    our_public = case our_public do
+        nil -> Kcl.derive_public_key(our_private)
+        _   -> our_public
+    end
     %Kcl.State{our_private: our_private, our_public: our_public}
   end
 
