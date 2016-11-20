@@ -3,7 +3,7 @@ defmodule Kcl.Mixfile do
 
   def project do
     [app: :kcl,
-     version: "0.6.4",
+     version: "0.6.5",
      elixir: "~> 1.3",
      name: "KCl",
      source_url: "https://github.com/mwmiller/kcl",
@@ -25,7 +25,7 @@ defmodule Kcl.Mixfile do
       {:salsa20, "~> 0.3"},
       {:poly1305, "~> 0.4"},
       {:earmark, "~> 1.0", only: :dev},
-      {:ex_doc, "~> 0.13", only: :dev},
+      {:ex_doc, "~> 0.14", only: :dev},
     ]
   end
 
