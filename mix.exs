@@ -3,15 +3,15 @@ defmodule Kcl.Mixfile do
 
   def project do
     [app: :kcl,
-     version: "0.6.5",
-     elixir: "~> 1.3",
+     version: "0.6.6",
+     elixir: "~> 1.4",
      name: "KCl",
      source_url: "https://github.com/mwmiller/kcl",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     description: description,
-     package: package,
-     deps: deps]
+     description: description(),
+     package: package(),
+     deps: deps()]
   end
 
   def application do

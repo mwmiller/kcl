@@ -30,14 +30,14 @@ defmodule Kcl do
   """
   @type key_variety :: :sign | :encrypt
 
-  defp first_level_key(k), do: k |> pad(16) |> Salsa20.hash(sixteen_zeroes)
+  defp first_level_key(k), do: k |> pad(16) |> Salsa20.hash(sixteen_zeroes())
   defp second_level_key(k,n) when byte_size(n) == 24, do: k |> Salsa20.hash(binary_part(n,0,16))
 
   defp pad(s, n) when byte_size(s) >= n, do: s
   defp pad(s, n) when byte_size(s) <  n, do: pad(<<0>><>s, n)
 
   defp sixteen_zeroes,   do: <<0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0>>
-  defp thirtytwo_zeroes, do: sixteen_zeroes<>sixteen_zeroes
+  defp thirtytwo_zeroes, do: sixteen_zeroes()<>sixteen_zeroes()
 
   @doc """
   generate a `{private, public}` key pair
@@ -76,7 +76,7 @@ defmodule Kcl do
   box based on a shared secret
   """
   def secretbox(msg,nonce,key) do
-      <<pnonce::binary-size(32), c::binary>> = Salsa20.crypt(thirtytwo_zeroes<>msg,second_level_key(key,nonce),binary_part(nonce,16,8))
+      <<pnonce::binary-size(32), c::binary>> = Salsa20.crypt(thirtytwo_zeroes()<>msg,second_level_key(key,nonce),binary_part(nonce,16,8))
       Poly1305.hmac(c,pnonce)<>c
   end
 
@@ -102,7 +102,7 @@ defmodule Kcl do
   @spec secretunbox(binary, nonce, key) :: binary | :error
   def secretunbox(packet,nonce,key)
   def secretunbox(<<mac::binary-size(16),c::binary>>,nonce,key) do
-      <<pnonce::binary-size(32), m::binary>> = Salsa20.crypt(thirtytwo_zeroes<>c,second_level_key(key,nonce),binary_part(nonce,16,8))
+      <<pnonce::binary-size(32), m::binary>> = Salsa20.crypt(thirtytwo_zeroes()<>c,second_level_key(key,nonce),binary_part(nonce,16,8))
       case (c |> Poly1305.hmac(pnonce) |> Poly1305.same_hmac?(mac)) do
           true ->  m
           _    ->  :error
