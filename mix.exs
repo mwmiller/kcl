@@ -3,7 +3,7 @@ defmodule Kcl.Mixfile do
 
   def project do
     [app: :kcl,
-     version: "0.6.6",
+     version: "1.0.0",
      elixir: "~> 1.4",
      name: "KCl",
      source_url: "https://github.com/mwmiller/kcl",
@@ -20,10 +20,10 @@ defmodule Kcl.Mixfile do
 
   defp deps do
     [
-      {:ed25519, "~> 0.2"},
-      {:curve25519, "~> 0.1"},
-      {:salsa20, "~> 0.3"},
-      {:poly1305, "~> 0.4"},
+      {:ed25519, "~> 1.0"},
+      {:curve25519, "~> 1.0"},
+      {:salsa20, "~> 1.0"},
+      {:poly1305, "~> 1.0"},
       {:earmark, "~> 1.0", only: :dev},
       {:ex_doc, "~> 0.14", only: :dev},
     ]
@@ -31,7 +31,7 @@ defmodule Kcl.Mixfile do
 
   defp description do
     """
-    KCl - a less savory pure Elixir NaCl crypto suite substitute
+    KCl - a less savory pure Elixir NaCl (libsodium) crypto suite substitute
     """
   end
 
