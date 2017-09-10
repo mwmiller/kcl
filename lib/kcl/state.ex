@@ -17,7 +17,7 @@ defmodule Kcl.State do
   not supplied. There is, otherwise, no verification that the supplied
   keys form a valid pair.
   """
-  @spec init(Kcl.key, Kcl.key | nil ) :: Kcl.State.t
+  @spec init(Kcl.key, Kcl.key | nil) :: Kcl.State.t
   def init(our_private, our_public \\ nil) do
     our_public = case our_public do
         nil -> Kcl.derive_public_key(our_private)
