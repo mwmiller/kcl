@@ -1,0 +1,10 @@
+%{"bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], [], "hexpm"},
+  "chacha20": {:hex, :chacha20, "1.0.1", "4f5eb7ec715b63f90b5f152b91cc490382753ad08827960017c0660c8e30f613", [:mix], [], "hexpm"},
+  "credo": {:hex, :credo, "0.8.10", "261862bb7363247762e1063713bb85df2bbd84af8d8610d1272cd9c1943bba63", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}], "hexpm"},
+  "curve25519": {:hex, :curve25519, "1.0.1", "35a57c0b571a23a35090a724974646ff729bdb161f2bc9a8cdb152ba0c9a29cd", [:mix], [], "hexpm"},
+  "earmark": {:hex, :earmark, "1.2.4", "99b637c62a4d65a20a9fb674b8cffb8baa771c04605a80c911c4418c69b75439", [:mix], [], "hexpm"},
+  "ed25519": {:hex, :ed25519, "1.1.0", "1bb574733b2a2b429bff80ff001002063af3c645f1a54508a53ceeccfd3095c4", [:mix], [], "hexpm"},
+  "equivalex": {:hex, :equivalex, "1.0.1", "19a28351e60272a19a4ba05c12f1f1d87fe6146d21531ec7d0783e1bc6a8179c", [:mix], [], "hexpm"},
+  "ex_doc": {:hex, :ex_doc, "0.18.1", "37c69d2ef62f24928c1f4fdc7c724ea04aecfdf500c4329185f8e3649c915baf", [:mix], [{:earmark, "~> 1.1", [hex: :earmark, repo: "hexpm", optional: false]}], "hexpm"},
+  "poly1305": {:hex, :poly1305, "1.0.1", "ed3e39ccb1c5b7994161f54b78906fffb10752ae4ff0d44879bdfb368f1a7e53", [:mix], [{:chacha20, "~> 1.0", [hex: :chacha20, repo: "hexpm", optional: false]}, {:equivalex, "~> 1.0", [hex: :equivalex, repo: "hexpm", optional: false]}], "hexpm"},
+  "salsa20": {:hex, :salsa20, "1.0.1", "60f14205859aa120b3ca0be3802a05e0c7bdd02e10e61abf24ce8c52529e1650", [:mix], [], "hexpm"}}
