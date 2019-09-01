@@ -157,4 +157,18 @@ defmodule Kcl do
   @spec valid_signature?(signature, binary, key) :: boolean
   def valid_signature?(signature, message, public_key),
     do: Ed25519.valid_signature?(signature, message, public_key)
+
+  @doc """
+  `crypto_auth` equivalent
+  """
+  @spec auth(binary, key) :: signature
+  def auth(message, key),
+    do: :crypto.hmac(:sha512, :binary.bin_to_list(key), :binary.bin_to_list(message), 32)
+
+  @doc """
+  Compare `auth` HMAC
+  """
+  @spec valid_auth?(signature, binary, key) :: boolean
+  def valid_auth?(signature, message, key),
+    do: auth(message, key) |> Equivalex.equal?(signature)
 end

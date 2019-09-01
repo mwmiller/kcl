@@ -60,4 +60,12 @@ defmodule KclTest do
     assert byte_size(sig) == 64, "Generates a 64-byte signature"
     assert Kcl.valid_signature?(sig, msg, spk), "The signature can be validated"
   end
+
+  test "auth roundtrip" do
+    {_ssk, spk} = Kcl.generate_key_pair(:encrypt)
+    msg = :crypto.strong_rand_bytes(384)
+    hmac = Kcl.auth(msg, spk)
+    assert byte_size(hmac) == 32, "Generates a 32-byte HMAC"
+    assert Kcl.valid_auth?(hmac, msg, spk), "The HMAC can be validated"
+  end
 end
