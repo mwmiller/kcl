@@ -1,9 +1,9 @@
 %{
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], [], "hexpm"},
   "chacha20": {:hex, :chacha20, "1.0.2", "73c5e96eba5e94917603a43c5c7c6b049436a5d71d9d3182781c345d87d28c8b", [:mix], [], "hexpm"},
-  "credo": {:hex, :credo, "1.1.3", "bf31887b8914a4b7e1810ae2b5aab7c657698abbf4cca6a2335a094d57995168", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}, {:jason, "~> 1.0", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm"},
+  "credo": {:hex, :credo, "1.1.4", "c2f3b73c895d81d859cec7fcee7ffdb972c595fd8e85ab6f8c2adbf01cf7c29c", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}, {:jason, "~> 1.0", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm"},
   "curve25519": {:hex, :curve25519, "1.0.3", "101248eeb2ed28f1b8d2d423cf560bfc99f5e22bae5a2bb113fd24efad05fae1", [:mix], [], "hexpm"},
-  "earmark": {:hex, :earmark, "1.3.6", "ce1d0675e10a5bb46b007549362bd3f5f08908843957687d8484fe7f37466b19", [:mix], [], "hexpm"},
+  "earmark": {:hex, :earmark, "1.4.0", "397e750b879df18198afc66505ca87ecf6a96645545585899f6185178433cc09", [:mix], [], "hexpm"},
   "ed25519": {:hex, :ed25519, "1.3.1", "35a363527d1c85c773eae8b5e2dfe133c693c270a20e281a7021937929da5c2e", [:mix], [], "hexpm"},
   "equivalex": {:hex, :equivalex, "1.0.2", "b9a9aaf79f2556288f514218653beaddb15afa2af407bfec37c5c4906e39f514", [:mix], [], "hexpm"},
   "ex_doc": {:hex, :ex_doc, "0.21.2", "caca5bc28ed7b3bdc0b662f8afe2bee1eedb5c3cf7b322feeeb7c6ebbde089d6", [:mix], [{:earmark, "~> 1.3.3 or ~> 1.4", [hex: :earmark, repo: "hexpm", optional: false]}, {:makeup_elixir, "~> 0.14", [hex: :makeup_elixir, repo: "hexpm", optional: false]}], "hexpm"},
