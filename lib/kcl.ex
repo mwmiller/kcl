@@ -62,8 +62,12 @@ defmodule Kcl do
 
   Mainly useful in a situation where many messages will be exchanged.
   """
-  def shared_secret(our_private, their_public),
-    do: our_private |> Curve25519.derive_shared_secret(their_public) |> first_level_key
+  def shared_secret(our_private, their_public) do
+    case Curve25519.derive_shared_secret(our_private, their_public) do
+      :error -> :error
+      val -> first_level_key(val)
+    end
+  end
 
   @doc """
   box up an authenticated packet

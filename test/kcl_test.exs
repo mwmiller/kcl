@@ -32,6 +32,8 @@ defmodule KclTest do
   test "shared secrets" do
     assert Kcl.shared_secret(ask(), bpk()) == sec(), "Alice produces the expected secret"
     assert Kcl.shared_secret(bsk(), apk()) == sec(), "Bob produces the same secret"
+    assert Kcl.shared_secret("", apk()) == :error, "Returns error on empty secret"
+    assert Kcl.shared_secret(ask(), "") == :error, "Returns error on empty public"
   end
 
   test "box/unbox with public/private pairs" do

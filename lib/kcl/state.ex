@@ -37,14 +37,19 @@ defmodule Kcl.State do
   The shared secret is computed from the state and new peer public key.
   The previous_nonce value is also reset to `0`.
   """
-  @spec new_peer(Kcl.State.t(), Kcl.key()) :: Kcl.State.t()
+  @spec new_peer(Kcl.State.t(), Kcl.key()) :: Kcl.State.t() | :error
   def new_peer(state, their_public) do
-    struct(
-      state,
-      their_public: their_public,
-      shared_secret: Kcl.shared_secret(state.our_private, their_public),
-      # Just in case someone reuses the struct.
-      previous_nonce: 0
-    )
+    case Kcl.shared_secret(state.our_private, their_public) do
+      :error ->
+        :error
+
+      ss ->
+        struct(state,
+          their_public: their_public,
+          shared_secret: ss,
+          # Just in case someone reuses the struct.
+          previous_nonce: 0
+        )
+    end
   end
 end
