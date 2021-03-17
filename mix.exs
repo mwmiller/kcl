@@ -26,7 +26,6 @@ defmodule Kcl.Mixfile do
       {:curve25519, ">= 1.0.4"},
       {:salsa20, "~> 1.0"},
       {:poly1305, "~> 1.0"},
-      {:earmark, "~> 1.4", only: :dev},
       {:ex_doc, "~> 0.23", only: :dev},
     ]
   end
