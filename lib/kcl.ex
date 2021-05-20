@@ -167,7 +167,7 @@ defmodule Kcl do
   """
   @spec auth(binary, key) :: signature
   def auth(message, key),
-    do: :crypto.hmac(:sha512, :binary.bin_to_list(key), :binary.bin_to_list(message), 32)
+    do: :crypto.macN(:hmac, :sha512, :binary.bin_to_list(key), :binary.bin_to_list(message), 32)
 
   @doc """
   Compare `auth` HMAC
