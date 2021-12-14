@@ -29,6 +29,11 @@ defmodule Kcl do
   """
   @type key_variety :: :sign | :encrypt
 
+  @typedoc """
+  key visibility
+  """
+  @type key_vis :: :public | :secret
+
   defp first_level_key(k), do: k |> pad(16) |> Salsa20.hash(sixteen_zeroes())
 
   defp second_level_key(k, n) when byte_size(n) == 24,
@@ -56,6 +61,12 @@ defmodule Kcl do
   def derive_public_key(private_key, variety \\ :encrypt)
   def derive_public_key(private_key, :encrypt), do: Curve25519.derive_public_key(private_key)
   def derive_public_key(private_key, :sign), do: Ed25519.derive_public_key(private_key)
+
+  @doc """
+  convert a signing Ed25519 key to a Curve25519 encryption key
+  """
+  @spec sign_to_encrypt(key, key_vis) :: key
+  def sign_to_encrypt(key, which), do: Ed25519.to_curve25519(key, which)
 
   @doc """
   pre-compute a shared key

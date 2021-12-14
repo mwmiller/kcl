@@ -4,8 +4,8 @@ defmodule KclTest do
   import PDFConstants
 
   test "key handling" do
-    {esk, epk} = Kcl.generate_key_pair()
     {ssk, spk} = Kcl.generate_key_pair(:sign)
+    {esk, epk} = {Kcl.sign_to_encrypt(ssk, :secret), Kcl.sign_to_encrypt(spk, :public)}
 
     assert Kcl.derive_public_key(esk, :encrypt) == epk,
            "Can reproduce a public encryption key from a randomly generated secret key"
