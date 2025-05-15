@@ -1,10 +1,10 @@
-defmodule Kcl.Mixfile do
+defmodule Kcl.MixProject do
   use Mix.Project
 
   def project do
     [
       app: :kcl,
-      version: "1.4.2",
+      version: "1.4.3",
       elixir: "~> 1.9",
       name: "KCl",
       source_url: "https://github.com/mwmiller/kcl",
@@ -32,7 +32,7 @@ defmodule Kcl.Mixfile do
 
   defp description do
     """
-    KCl - a less savory pure Elixir NaCl (libsodium) crypto suite substitute
+    A less savory pure Elixir NaCl (libsodium) crypto suite substitute
     """
   end
 
