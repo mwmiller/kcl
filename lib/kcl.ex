@@ -110,10 +110,10 @@ defmodule Kcl do
   @doc """
   unbox an authenticated packet
 
-  Returns `:error` when the packet contents cannot be authenticated, otherwise
+  Returns `{:error, reason}` when the packet contents cannot be authenticated, otherwise
   the decrypted payload and updated state.
   """
-  @spec unbox(binary, nonce, key, key) :: {binary, Kcl.State.t()} | :error
+  @spec unbox(binary, nonce, key, key) :: {binary, Kcl.State.t()} | {:error, String.t()}
   def unbox(packet, nonce, our_private, their_public),
     do:
       packet |> unbox(nonce, our_private |> Kcl.State.init() |> Kcl.State.new_peer(their_public))
