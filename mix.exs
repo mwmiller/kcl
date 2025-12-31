@@ -4,7 +4,7 @@ defmodule Kcl.MixProject do
   def project do
     [
       app: :kcl,
-      version: "1.4.4",
+      version: "1.5.0",
       elixir: "~> 1.9",
       name: "KCl",
       source_url: "https://github.com/mwmiller/kcl",
@@ -22,7 +22,7 @@ defmodule Kcl.MixProject do
 
   defp deps do
     [
-      {:ed25519, "~> 1.3"},
+      {:ed25519, ">= 1.5.0"},
       {:curve25519, ">= 1.0.4"},
       {:salsa20, "~> 1.0"},
       {:poly1305, "~> 1.0"},
